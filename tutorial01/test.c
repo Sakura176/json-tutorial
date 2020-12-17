@@ -1,3 +1,12 @@
+/*
+ * @Author: 不摇碧莲
+ * @Date: 2020-12-16 19:02:18
+ * @LastEditTime: 2020-12-16 20:26:23
+ * @LastEditors: 不摇碧莲
+ * @Description: 参考 test_parse_null()，加入 test_parse_true()、test_parse_false() 单元测试。
+ * @FilePath: /json-tutorial/tutorial01/test.c
+ * @
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,6 +34,20 @@ static void test_parse_null() {
     v.type = LEPT_FALSE;
     EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "null"));
     EXPECT_EQ_INT(LEPT_NULL, lept_get_type(&v));
+}
+
+static void test_parse_true(){
+    lept_value v;
+    v.type = LEPT_FALSE;
+    EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "true"));
+    EXPECT_EQ_INT(LEPT_TRUE, lept_get_type(&v));
+}
+
+static void test_parse_false(){
+    lept_value v;
+    v.type = LEPT_FALSE;
+    EXPECT_EQ_INT(LEPT_PARSE_OK, lept_parse(&v, "false"));
+    EXPECT_EQ_INT(LEPT_FALSE, lept_get_type(&v));
 }
 
 static void test_parse_expect_value() {
