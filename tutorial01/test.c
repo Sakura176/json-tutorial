@@ -1,7 +1,7 @@
 /*
  * @Author: 不摇碧莲
  * @Date: 2020-12-16 19:02:18
- * @LastEditTime: 2020-12-16 20:26:23
+ * @LastEditTime: 2020-12-17 11:16:52
  * @LastEditors: 不摇碧莲
  * @Description: 参考 test_parse_null()，加入 test_parse_true()、test_parse_false() 单元测试。
  * @FilePath: /json-tutorial/tutorial01/test.c
@@ -82,6 +82,8 @@ static void test_parse_root_not_singular() {
 
 static void test_parse() {
     test_parse_null();
+    test_parse_true();
+    test_parse_false();
     test_parse_expect_value();
     test_parse_invalid_value();
     test_parse_root_not_singular();

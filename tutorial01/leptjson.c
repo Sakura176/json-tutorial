@@ -1,7 +1,7 @@
 /*
  * @Author: Milo Yip
  * @Date: 2020-12-16 19:02:18
- * @LastEditTime: 2020-12-16 20:15:59
+ * @LastEditTime: 2020-12-17 11:26:17
  * @LastEditors: 不摇碧莲
  * @Description: 参考 lept_parse_null() 的实现和调用方法，解析true和false值
  * @FilePath: /json-tutorial/tutorial01/leptjson.c
@@ -13,10 +13,18 @@
 
 #define EXPECT(c, ch)       do { assert(*c->json == (ch)); c->json++; } while(0)
 
+/**
+ * @description: 结构体，用于存储JSON文件的内容
+ * @param {const char* json} 记录json文本内容
+ */
 typedef struct {
     const char* json;
 }lept_context;
 
+/**
+ * @description: 检测是否存在空格
+ * @param lept_context* 结构体指针
+ */
 static void lept_parse_whitespace(lept_context* c) {
     const char *p = c->json;
     while (*p == ' ' || *p == '\t' || *p == '\n' || *p == '\r')
@@ -24,6 +32,12 @@ static void lept_parse_whitespace(lept_context* c) {
     c->json = p;
 }
 
+/**
+ * @description: 检查值是否为 null
+ * @param lept_context* 结构体指针
+ * @param lept_value* 结构体的值类型
+ * @return int
+ */
 static int lept_parse_null(lept_context* c, lept_value* v) {
     EXPECT(c, 'n');
     if (c->json[0] != 'u' || c->json[1] != 'l' || c->json[2] != 'l')
@@ -63,11 +77,17 @@ static int lept_parse_value(lept_context* c, lept_value* v) {
 
 int lept_parse(lept_value* v, const char* json) {
     lept_context c;
+    int ret;
     assert(v != NULL);
     c.json = json;
     v->type = LEPT_NULL;
     lept_parse_whitespace(&c);
-    return lept_parse_value(&c, v);
+    if ((ret = lept_parse_value(&c, v)) == LEPT_PARSE_OK){
+        lept_parse_whitespace(&c);
+        if (*c.json != '\0')
+            ret = LEPT_PARSE_ROOT_NOT_SINGULAR;
+    }
+    return ret;
 }
 
 lept_type lept_get_type(const lept_value* v) {
